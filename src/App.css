@@ -36,3 +36,44 @@
     transform: rotate(360deg);
   }
 }
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 1rem;
+}
+
+table {
+  border-collapse: collapse;
+  width: fit-content;
+}
+
+th,
+td {
+  border: 2px solid #ffffff;
+  text-align: left;
+  font-size: 20px;
+}
+
+th {
+  background-color: rgb(250, 117, 150);
+}
+
+td {
+  background-color: rgb(205, 253, 209);
+}
+
+form {
+  display: flex;
+  gap: 5px;
+}
+
+form td:last-child {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+form * {
+  font-size: 20px;
+}
