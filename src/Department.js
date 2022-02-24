@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import AddDepartment from './AddDepartment';
+import Items from './Items';
 
 export default function Department() {
 
@@ -47,6 +48,7 @@ export default function Department() {
         .then(response=>response.json())
         .then(data => setData(data));
     }
+
 
     useEffect(refreshList,[])
 

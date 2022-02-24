@@ -2,7 +2,34 @@ import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 
 export default function Employee() {
-  let [data, setData] = useState([]);
+  let [data, setData] = useState({
+    "PageNumber": 0,
+    "PageSize": 0,
+    "FirstPage": '',
+    "LastPage": '',
+    "TotalPages": 0,
+    "TotalRecords": 0,
+    "NextPage": '',
+    "PreviousPage": null,
+    "Data": {
+      "ContentType": null,
+      "SerializerSettings": null,
+      "StatusCode": null,
+      "Value": [
+        {
+          "EmployeeId": 0,
+          "Name": '',
+          "DepartmentId": 0,
+          "Title": '',
+          "ReportsTo": 0,
+          "HireDate": ''
+        }
+      ]
+    },
+    "Succeeded": true,
+    "Errors": null,
+    "Message": null
+  });
   let [addFormData, setAddFormData] = useState({
     Name : '',
     DepartmentId : '',
@@ -44,7 +71,7 @@ export default function Employee() {
     },
     (error)=>{
         alert('Failed');
-    }).then(refreshList)
+    }).then(refreshPagedList)
 
     document.getElementById("employee-form").reset();
   }
@@ -57,9 +84,18 @@ export default function Employee() {
       .then(data => setData(data));
   }
 
-  useEffect(refreshList,[])
+  function refreshPagedList(uri = process.env.REACT_APP_WEBSITE_NAME + 'Employee/GetPaginatedAllEmployees'){
+    if(uri!=null){
+      fetch(uri)
+      .then(response=>response.json())
+      .then(data => setData(data))
+    }
+  }
+
+  useEffect(refreshPagedList,[])
 
   function handlDeleteClick(employeeId) {
+    console.log(employeeId)
     fetch(process.env.REACT_APP_WEBSITE_NAME+'employee/DeleteEmployee/'+employeeId,{
         method:'DELETE',
         headers:{
@@ -73,7 +109,7 @@ export default function Employee() {
     },
     (error)=>{
         alert('Failed');
-    }).then(refreshList)
+    }).then(refreshPagedList)
   }
 
   return (
@@ -87,7 +123,7 @@ export default function Employee() {
         <th>Начальник</th>
         <th>Начал работать с</th>
       </tr>
-        {data.map(item => (
+        {data.Data.Value.map(item => (
           <tr key={item.EmployeeId}>
             <td>{item.EmployeeId}</td>
             <td>{item.Name}</td>
@@ -99,6 +135,11 @@ export default function Employee() {
           </tr>
         ))}
     </table>
+    <button type="button" onClick={() => refreshPagedList(data.FirstPage)}>First</button>
+    <button type="button" onClick={() => refreshPagedList(data.PreviousPage)}>Previous</button>
+    <button type="button" onClick={() => refreshPagedList(data.NextPage)}>Next</button>
+    <button type="button" onClick={() => refreshPagedList(data.LastPage)}>Last</button>
+    
     <h2>Добавить сотрудника</h2>
     <form id="employee-form" onSubmit={handleAddFormSubmit}>
       <input type="text" name="Name" placeholder="Enter Name"required="required" onChange={handleAddFormChnage}></input>
