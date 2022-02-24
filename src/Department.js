@@ -81,7 +81,7 @@ export default function Department() {
           </thead>
           <tbody>
           {data.map(item => (
-            <tr>
+            <tr key={item.DepartmentId}>
               <td>{item.DepartmentId}</td>
               <td>{item.DepartmentName}</td>
               <td><button type="button" onClick={() => handlDeleteClick(item.DepartmentId)}>Удалить</button></td>

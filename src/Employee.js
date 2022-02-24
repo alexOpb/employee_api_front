@@ -86,10 +86,9 @@ export default function Employee() {
         <th>Должность</th>
         <th>Начальник</th>
         <th>Начал работать с</th>
-        <th>Удалить/Изменить</th>
       </tr>
         {data.map(item => (
-          <tr>
+          <tr key={item.EmployeeId}>
             <td>{item.EmployeeId}</td>
             <td>{item.Name}</td>
             <td>{item.DepartmentId}</td>
